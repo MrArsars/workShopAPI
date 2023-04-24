@@ -13,7 +13,7 @@ def TemperaturePost(request):
     serializer = TemperatureSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        if serializer['temperature'].value > 28.0:
+        if serializer['temperature'].value > 23.0:
             state = FanState.objects.get(pk=1)
             state.IsActive = 255
             state.save()
@@ -21,6 +21,8 @@ def TemperaturePost(request):
             state = FanState.objects.get(pk=1)
             state.IsActive = 0
             state.save()
+        print("TEMPERATURE AND HUM:", serializer.data)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -31,6 +33,7 @@ def LightPost(request):
     serializer = LightSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        print("LIGHT:", serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -41,6 +44,7 @@ def HumidityPost(request):
     serializer = HumiditySerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        print("HUMIDITY:", serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -51,6 +55,7 @@ def PirPost(request):
     serializer = PirSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        print("PIR:", serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
