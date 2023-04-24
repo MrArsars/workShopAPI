@@ -6,6 +6,12 @@ from api.models import *
 # from rest_framework import permissions
 from api.serializers import *
 
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def GetState(request):
+    state = FanState.objects.get(pk=1)
+    return Response(state)
+
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
@@ -52,12 +58,7 @@ def HumidityPost(request):
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
 def PirPost(request):
-    serializer = PirSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        print("PIR:", serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response("good", status=status.HTTP_200_OK)
 
 
 class TemperatureViewSet(viewsets.ModelViewSet):

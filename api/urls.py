@@ -7,4 +7,5 @@ urlpatterns = [
     path('light', LightPost),
     path('humidity', HumidityPost),
     path('pir', PirPost),
+    path('')
 ]
