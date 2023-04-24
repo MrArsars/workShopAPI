@@ -87,4 +87,4 @@ class PirViewSet(viewsets.ModelViewSet):
 class FanViewSet(viewsets.ModelViewSet):
     queryset = FanState.objects.all()
     serializer_class = FanStateSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
