@@ -1,27 +1,56 @@
-from rest_framework import viewsets, permissions, status, generics
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from api.models import TemperatureSensor, FanState
+from api.models import *
 # from rest_framework import permissions
 from api.serializers import *
 
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
-def post(request):
+def TemperaturePost(request):
     serializer = TemperatureSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         if serializer['temperature'].value > 28.0:
             state = FanState.objects.get(pk=1)
-            state.IsActive = True
+            state.IsActive = 255
             state.save()
         else:
             state = FanState.objects.get(pk=1)
-            state.IsActive = False
+            state.IsActive = 0
             state.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def LightPost(request):
+    serializer = LightSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def HumidityPost(request):
+    serializer = HumiditySerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def PirPost(request):
+    serializer = PirSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -29,7 +58,25 @@ def post(request):
 class TemperatureViewSet(viewsets.ModelViewSet):
     queryset = TemperatureSensor.objects.all().order_by('-time')
     serializer_class = TemperatureSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class LightViewSet(viewsets.ModelViewSet):
+    queryset = LightSensor.objects.all().order_by('-time')
+    serializer_class = LightSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class HumidityViewSet(viewsets.ModelViewSet):
+    queryset = HumiditySensor.objects.all().order_by('-time')
+    serializer_class = HumiditySerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+
+class PirViewSet(viewsets.ModelViewSet):
+    queryset = PirSensor.objects.all().order_by('-time')
+    serializer_class = PirSerializer
+    # permission_classes = [permissions.IsAuthenticated]
 
 
 class FanViewSet(viewsets.ModelViewSet):
