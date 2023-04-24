@@ -10,6 +10,7 @@ router.register(r'fan-state', views.FanViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
+    path('auth', include('rest_framework.urls')),
     path('post', include('api.urls')),
 
 ]

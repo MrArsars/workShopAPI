@@ -1,6 +1,7 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status, generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from api.models import TemperatureSensor, FanState
 # from rest_framework import permissions
@@ -28,9 +29,10 @@ def post(request):
 class TemperatureViewSet(viewsets.ModelViewSet):
     queryset = TemperatureSensor.objects.all().order_by('-time')
     serializer_class = TemperatureSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class FanViewSet(viewsets.ModelViewSet):
     queryset = FanState.objects.all()
     serializer_class = FanStateSerializer
+    permission_classes = [permissions.IsAuthenticated]
